@@ -5,14 +5,18 @@ namespace Kamera
     internal class CameraController : MonoBehaviour
     {
         private static CameraController _instance;
-        public static CameraController Instance => _instance ??= new GameObject().AddComponent<CameraController>();
+        public static CameraController Instance
+            => _instance
+            = _instance != null
+            ? _instance
+            : new GameObject(nameof(CameraController)).AddComponent<CameraController>();
 
         public Camera Camera { get; private set; }
         public CameraConfiguration CameraConfiguration { get; private set; }
 
         private void Awake()
         {
-            if (_instance is null)
+            if (_instance == null)
             {
                 _instance = this;
                 return;
