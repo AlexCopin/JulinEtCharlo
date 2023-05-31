@@ -14,7 +14,8 @@ namespace Kamera
 
         public Vector3 Pivot;
 
-        public Vector3 Position => Pivot * Distance;
+        public Vector3 Offset => Rotation * (Vector3.back * Distance);
+        public Vector3 Position => Pivot + Offset;
         public Quaternion Rotation => Quaternion.Euler(Pitch, Yaw, Roll);
 
         public void DrawGizmos(Color color)
