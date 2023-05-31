@@ -4,11 +4,14 @@ namespace Kamera
 {
     internal abstract class AView : MonoBehaviour
     {
-        public bool IsActiveOnStart;
+        [field: SerializeField]
+        public bool IsActiveOnStart { get; private set; }
 
-        public float Weight;
+        [field: Range(0, 1)]
+        [field: SerializeField]
+        public float Weight { get; private set; }
 
-        public abstract CameraConfiguration GetConfiguration();
+        public abstract CameraConfiguration Configuration { get; }
 
         public void SetActive(bool isActive)
         {
@@ -20,6 +23,6 @@ namespace Kamera
 
         private void Awake() => SetActive(IsActiveOnStart);
 
-        private void OnDrawGizmos() => GetConfiguration().DrawGizmos(Color.magenta);
+        private void OnDrawGizmos() => Configuration.DrawGizmos(Color.magenta);
     }
 }

@@ -13,6 +13,7 @@ namespace Kamera
             : new GameObject(nameof(CameraController)).AddComponent<CameraController>();
 
         [field: SerializeField] public Camera Camera { get; private set; }
+        [field: SerializeField] public CameraConfiguration CameraConfiguration { get; private set; }
 
         private readonly List<AView> _activeViews = new List<AView>();
 
@@ -21,6 +22,8 @@ namespace Kamera
 
         private void ApplyConfig(in CameraConfiguration cameraConfiguration)
         {
+            CameraConfiguration = cameraConfiguration;
+
             Camera.transform.SetPositionAndRotation(cameraConfiguration.Position, cameraConfiguration.Rotation);
             Camera.fieldOfView = cameraConfiguration.Fov;
         }
@@ -30,16 +33,18 @@ namespace Kamera
             var yawSum = Vector2.zero;
             var picthSum = Vector2.zero;
             var rollSum = Vector2.zero;
+            var posSum = Vector3.zero;
             var fovSum = 0f;
             var weightSum = 0f;
 
             foreach (var view in _activeViews)
             {
-                var cfg = view.GetConfiguration();
+                var cfg = view.Configuration;
 
                 yawSum += new Vector2(Mathf.Cos(cfg.Yaw * Mathf.Deg2Rad), Mathf.Sin(cfg.Yaw * Mathf.Deg2Rad)) * view.Weight;
                 picthSum += new Vector2(Mathf.Cos(cfg.Pitch * Mathf.Deg2Rad), Mathf.Sin(cfg.Pitch * Mathf.Deg2Rad)) * view.Weight;
                 rollSum += new Vector2(Mathf.Cos(cfg.Roll * Mathf.Deg2Rad), Mathf.Sin(cfg.Roll * Mathf.Deg2Rad)) * view.Weight;
+                posSum += cfg.Position * view.Weight;
                 fovSum += cfg.Fov * view.Weight;
                 weightSum += view.Weight;
             }
@@ -47,9 +52,10 @@ namespace Kamera
             var yaw = Vector2.SignedAngle(Vector2.right, yawSum);
             var pitch = Vector2.SignedAngle(Vector2.right, picthSum);
             var roll = Vector2.SignedAngle(Vector2.right, rollSum);
+            var pos = posSum / weightSum;
             var fov = fovSum / weightSum;
 
-            return new CameraConfiguration { Yaw = yaw, Pitch = pitch, Roll = roll, Fov = fov };
+            return new CameraConfiguration { Yaw = yaw, Pitch = pitch, Roll = roll, Pivot = pos, Fov = fov };
         }
 
         private void Awake()

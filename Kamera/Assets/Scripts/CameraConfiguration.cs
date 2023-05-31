@@ -6,11 +6,19 @@ namespace Kamera
     [Serializable]
     internal class CameraConfiguration
     {
+        [Range(0, 360)]
         public float Yaw;
+
+        [Range(-90, 90)]
         public float Pitch;
+
+        [Range(-180, 180)]
         public float Roll;
-        public float Distance;
+
+        [Range(10, 150)]
         public float Fov;
+
+        public float Distance;
 
         public Vector3 Pivot;
 
