@@ -12,8 +12,8 @@ namespace Kamera
             ? _instance
             : new GameObject(nameof(CameraController)).AddComponent<CameraController>();
 
-        public Camera Camera { get; private set; }
-        public CameraConfiguration CameraConfiguration { get; private set; }
+        [field: SerializeField] public Camera Camera { get; private set; }
+        [field: SerializeField] public CameraConfiguration CameraConfiguration { get; private set; }
 
         private List<AView> activeViews = new List<AView>();
 
