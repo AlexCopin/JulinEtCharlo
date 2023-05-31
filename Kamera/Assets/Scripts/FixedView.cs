@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace Kamera
 {
     internal class FixedView : AView
@@ -9,7 +11,14 @@ namespace Kamera
 
         public override CameraConfiguration GetConfiguration()
         {
-            return base.GetConfiguration();
+            CameraConfiguration config = new CameraConfiguration();
+            config.Yaw = Yaw;
+            config.Pitch = Pitch;
+            config.Roll = Roll;
+            config.Fov = Fov;
+            config.Pivot = transform.position;
+            config.Distance = 0;
+            return config;
         }
     }
 }

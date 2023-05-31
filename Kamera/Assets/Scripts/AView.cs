@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Kamera
@@ -6,6 +7,14 @@ namespace Kamera
     {
         public float weight;
 
-        public virtual CameraConfiguration GetConfiguration() => null;
+        public bool isActiveOnStart;
+
+        private void Start() => SetActive(isActiveOnStart);
+
+
+
+        public virtual CameraConfiguration GetConfiguration() => throw new NotImplementedException();
+
+        public void SetActive(in bool isActive) => gameObject.SetActive(isActive);
     }
 }

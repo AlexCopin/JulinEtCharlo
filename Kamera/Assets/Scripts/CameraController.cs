@@ -13,7 +13,6 @@ namespace Kamera
             : new GameObject(nameof(CameraController)).AddComponent<CameraController>();
 
         [field: SerializeField] public Camera Camera { get; private set; }
-        [field: SerializeField] public CameraConfiguration CameraConfiguration { get; private set; }
 
         private List<AView> activeViews = new List<AView>();
 
@@ -28,12 +27,34 @@ namespace Kamera
             Destroy(this);
         }
 
-        private void OnDrawGizmos() => CameraConfiguration.DrawGizmos(Color.red);
-
-        public void ApplyConfiguration(in Camera camera, in CameraConfiguration cameraConfiguration)
+        public void ApplyConfiguration(in Camera camera)
         {
             Camera = camera;
-            CameraConfiguration = cameraConfiguration;
+        }
+
+        public void AddView(AView view) => activeViews.Add(view);
+
+        public void RemoveView(AView view) => activeViews.Remove(view);
+
+        private void Update()
+        {
+            ComputeCamsAverage();
+        }
+
+        public float ComputeAverageYaw()
+        {
+            Vector2 sum = Vector2.zero;
+            foreach (AView view in activeViews)
+            {
+                CameraConfiguration config = view.GetConfiguration();
+                sum += new Vector2(Mathf.Cos(config.Yaw * Mathf.Deg2Rad),
+                Mathf.Sin(config.Yaw * Mathf.Deg2Rad)) * view.weight;
+            }
+            return Vector2.SignedAngle(Vector2.right, sum);
+        }
+
+        private void ComputeCamsAverage()
+        {
         }
     }
 }
