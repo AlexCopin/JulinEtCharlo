@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Kamera
 {
@@ -28,12 +28,12 @@ namespace Kamera
             Destroy(this);
         }
 
+        private void OnDrawGizmos() => CameraConfiguration.DrawGizmos(Color.red);
+
         public void ApplyConfiguration(in Camera camera, in CameraConfiguration cameraConfiguration)
         {
             Camera = camera;
             CameraConfiguration = cameraConfiguration;
         }
-
-
     }
 }
