@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Kamera
 {
@@ -13,6 +14,8 @@ namespace Kamera
 
         public Camera Camera { get; private set; }
         public CameraConfiguration CameraConfiguration { get; private set; }
+
+        private List<AView> activeViews = new List<AView>();
 
         private void Awake()
         {
@@ -30,5 +33,7 @@ namespace Kamera
             Camera = camera;
             CameraConfiguration = cameraConfiguration;
         }
+
+
     }
 }
