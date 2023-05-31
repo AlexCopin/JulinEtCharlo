@@ -1,20 +1,25 @@
-using System;
 using UnityEngine;
 
 namespace Kamera
 {
     internal abstract class AView : MonoBehaviour
     {
-        public float weight;
+        public bool IsActiveOnStart;
 
-        public bool isActiveOnStart;
+        public float Weight;
 
-        private void Start() => SetActive(isActiveOnStart);
+        public abstract CameraConfiguration GetConfiguration();
 
+        public void SetActive(bool isActive)
+        {
+            if (isActive)
+                CameraController.Instance.AddView(this);
+            else
+                CameraController.Instance.RemoveView(this);
+        }
 
+        private void Awake() => SetActive(IsActiveOnStart);
 
-        public virtual CameraConfiguration GetConfiguration() => throw new NotImplementedException();
-
-        public void SetActive(in bool isActive) => gameObject.SetActive(isActive);
+        private void OnDrawGizmos() => GetConfiguration().DrawGizmos(Color.magenta);
     }
 }

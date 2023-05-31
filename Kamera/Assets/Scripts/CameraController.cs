@@ -14,7 +14,43 @@ namespace Kamera
 
         [field: SerializeField] public Camera Camera { get; private set; }
 
-        private List<AView> activeViews = new List<AView>();
+        private readonly List<AView> _activeViews = new List<AView>();
+
+        public void AddView(in AView view) => _activeViews.Add(view);
+        public void RemoveView(in AView view) => _activeViews.Remove(view);
+
+        private void ApplyConfig(in CameraConfiguration cameraConfiguration)
+        {
+            Camera.transform.SetPositionAndRotation(cameraConfiguration.Position, cameraConfiguration.Rotation);
+            Camera.fieldOfView = cameraConfiguration.Fov;
+        }
+
+        private CameraConfiguration ComputeAverage()
+        {
+            var yawSum = Vector2.zero;
+            var picthSum = Vector2.zero;
+            var rollSum = Vector2.zero;
+            var fovSum = 0f;
+            var weightSum = 0f;
+
+            foreach (var view in _activeViews)
+            {
+                var cfg = view.GetConfiguration();
+
+                yawSum += new Vector2(Mathf.Cos(cfg.Yaw * Mathf.Deg2Rad), Mathf.Sin(cfg.Yaw * Mathf.Deg2Rad)) * view.Weight;
+                picthSum += new Vector2(Mathf.Cos(cfg.Pitch * Mathf.Deg2Rad), Mathf.Sin(cfg.Pitch * Mathf.Deg2Rad)) * view.Weight;
+                rollSum += new Vector2(Mathf.Cos(cfg.Roll * Mathf.Deg2Rad), Mathf.Sin(cfg.Roll * Mathf.Deg2Rad)) * view.Weight;
+                fovSum += cfg.Fov * view.Weight;
+                weightSum += view.Weight;
+            }
+
+            var yaw = Vector2.SignedAngle(Vector2.right, yawSum);
+            var pitch = Vector2.SignedAngle(Vector2.right, picthSum);
+            var roll = Vector2.SignedAngle(Vector2.right, rollSum);
+            var fov = fovSum / weightSum;
+
+            return new CameraConfiguration { Yaw = yaw, Pitch = pitch, Roll = roll, Fov = fov };
+        }
 
         private void Awake()
         {
@@ -27,34 +63,6 @@ namespace Kamera
             Destroy(this);
         }
 
-        public void ApplyConfiguration(in Camera camera)
-        {
-            Camera = camera;
-        }
-
-        public void AddView(AView view) => activeViews.Add(view);
-
-        public void RemoveView(AView view) => activeViews.Remove(view);
-
-        private void Update()
-        {
-            ComputeCamsAverage();
-        }
-
-        public float ComputeAverageYaw()
-        {
-            Vector2 sum = Vector2.zero;
-            foreach (AView view in activeViews)
-            {
-                CameraConfiguration config = view.GetConfiguration();
-                sum += new Vector2(Mathf.Cos(config.Yaw * Mathf.Deg2Rad),
-                Mathf.Sin(config.Yaw * Mathf.Deg2Rad)) * view.weight;
-            }
-            return Vector2.SignedAngle(Vector2.right, sum);
-        }
-
-        private void ComputeCamsAverage()
-        {
-        }
+        private void Update() => ApplyConfig(ComputeAverage());
     }
 }
