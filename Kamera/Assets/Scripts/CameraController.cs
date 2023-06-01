@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,15 +18,15 @@ namespace Kamera
 
         private readonly List<AView> _activeViews = new List<AView>();
 
+        private Coroutine _currentTransitionCoroutine = null;
+
         public void AddView(in AView view) => _activeViews.Add(view);
         public void RemoveView(in AView view) => _activeViews.Remove(view);
 
         private void ApplyConfig(in CameraConfiguration cameraConfiguration)
         {
-            CameraConfiguration = cameraConfiguration;
-
-            Camera.transform.SetPositionAndRotation(cameraConfiguration.Position, cameraConfiguration.Rotation);
-            Camera.fieldOfView = cameraConfiguration.Fov;
+            if (_currentTransitionCoroutine != null) StopCoroutine(_currentTransitionCoroutine);
+           _currentTransitionCoroutine = StartCoroutine(EaseOutCamTransition(CameraConfiguration, cameraConfiguration));
         }
 
         private CameraConfiguration ComputeAverage()
@@ -69,6 +70,35 @@ namespace Kamera
             Destroy(this);
         }
 
-        private void Update() => ApplyConfig(ComputeAverage());
+        private IEnumerator EaseOutCamTransition(CameraConfiguration start, CameraConfiguration end, float time = 1.0f, float speed = 1.0f)
+        {
+
+            float t = 0f;
+            while(t < time)
+            {
+                float fT = t / time;
+                fT = fT * fT * (3f - 2f * fT);
+
+                Camera.transform.position = Vector3.Lerp(start.Position, end.Position, fT);
+                Camera.transform.rotation = Quaternion.Lerp(start.Rotation, end.Rotation, fT);
+                Camera.fieldOfView = Mathf.Lerp(start.Fov, end.Fov, fT);
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            CameraConfiguration = end;
+            Camera.transform.position = CameraConfiguration.Position;
+            Camera.transform.rotation = CameraConfiguration.Rotation;
+            Camera.fieldOfView = CameraConfiguration.Fov;
+            yield return null;
+        }
+
+        private void OnGUI()
+        {
+            if (GUI.Button(new Rect(10, 70, 50, 30), "Click"))
+            {
+                ApplyConfig(ComputeAverage());
+            }
+        }
     }
 }
