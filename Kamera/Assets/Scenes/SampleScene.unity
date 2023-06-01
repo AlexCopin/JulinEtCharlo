@@ -379,9 +379,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsActiveOnStart>k__BackingField: 1
   <Weight>k__BackingField: 1
-  Roll: 50
+  Roll: 0
   Fov: 60
+  YawOffsetMax: 0
+  PitchOffsetMax: 0
   Target: {fileID: 1600433712}
+  CentralPoint: {fileID: 0}
 --- !u!1 &544446610
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,9 +638,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsActiveOnStart>k__BackingField: 1
   <Weight>k__BackingField: 0
-  Roll: 30
-  Fov: 50
+  Roll: 0
+  Fov: 60
+  YawOffsetMax: 0
+  PitchOffsetMax: 0
   Target: {fileID: 1600433712}
+  CentralPoint: {fileID: 0}
 --- !u!1 &1418613355
 GameObject:
   m_ObjectHideFlags: 0

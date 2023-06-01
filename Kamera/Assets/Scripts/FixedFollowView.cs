@@ -20,7 +20,7 @@ namespace Kamera
         public GameObject CentralPoint;
 
 
-        private Vector3 dir => GetDirNorm();
+        private Vector3 dir => Vector3.Normalize(Target.transform.position - transform.position);
 
         public override CameraConfiguration Configuration => new CameraConfiguration
         {
@@ -32,7 +32,10 @@ namespace Kamera
             Distance = 0
         };
 
-        private Vector3 GetDirNorm() => Vector3.Normalize(Target.transform.position - transform.position);
+        protected override void DrawGizmos()
+        {
+            base.DrawGizmos();
+        }
 
     }
 
