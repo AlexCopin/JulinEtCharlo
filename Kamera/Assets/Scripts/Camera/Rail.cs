@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Kamera
 {
@@ -16,6 +18,8 @@ namespace Kamera
         private float m_length;
 
         private List<Vector3> m_nodes = new List<Vector3>();
+
+        private int m_currNode = 0;
 
         private void Start()
         {
@@ -35,10 +39,14 @@ namespace Kamera
 
         public float GetLength() => m_length;
 
-        Vector3 GetPosition(float distance)
-        {
-            return Vector3.zero;
-        }
+        public int GetCurrentNode() => m_currNode;
+        public int GetRailNodeSize() => m_nodes.Count - 2;
+
+        public Vector3 GetPosition(float distance) => Vector3.Lerp(m_nodes[m_currNode], m_nodes[m_currNode + 1], distance);
+
+
+        public void UpdateNode(int way) => _=(m_currNode + way >= 0 && m_currNode + way < m_nodes.Count - 1) ? m_currNode += way : m_currNode;
+
 
 
 

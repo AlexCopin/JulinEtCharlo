@@ -437,7 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121c730e25e70d54e96ab5b689da2f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IsActiveOnStart>k__BackingField: 1
+  <IsActiveOnStart>k__BackingField: 0
   <Weight>k__BackingField: 1
   Roll: 0
   Fov: 60
@@ -694,57 +694,6 @@ Transform:
   m_Father: {fileID: 1277869271}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1038119305
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1038119307}
-  - component: {fileID: 1038119306}
-  m_Layer: 0
-  m_Name: GameObject (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1038119306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1038119305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb971d1689595b4f90f3c7c2b095497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsActiveOnStart>k__BackingField: 0
-  <Weight>k__BackingField: 0
-  Roll: 0
-  Distance: 0
-  Fov: 0
-  speed: 0
-  Target: {fileID: 1600433712}
-  Rail: {fileID: 0}
---- !u!4 &1038119307
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1038119305}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7381911, y: 2.116059, z: -1.6624641}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1272339847
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121c730e25e70d54e96ab5b689da2f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IsActiveOnStart>k__BackingField: 1
+  <IsActiveOnStart>k__BackingField: 0
   <Weight>k__BackingField: 0
   Roll: 0
   Fov: 60
@@ -825,6 +774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1277869271}
   - component: {fileID: 1277869270}
+  - component: {fileID: 1277869272}
   m_Layer: 0
   m_Name: Rail
   m_TagString: Untagged
@@ -844,7 +794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e53fdd171f88634591cc746cf345d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsLoop: 0
+  IsLoop: 1
   RenderGizmos: 1
   GizmoLineColorBase: {r: 1, g: 0.7337315, b: 0, a: 1}
   GizmoLineColorCurrent: {r: 1, g: 0, b: 0, a: 1}
@@ -870,8 +820,29 @@ Transform:
   - {fileID: 1646061817}
   - {fileID: 33304946}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1277869272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277869269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb971d1689595b4f90f3c7c2b095497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsActiveOnStart>k__BackingField: 1
+  <Weight>k__BackingField: 0
+  Roll: 0
+  Distance: 0
+  Fov: 0
+  speed: 1
+  Target: {fileID: 1600433712}
+  Rail: {fileID: 1277869270}
+  IsAuto: 1
 --- !u!1 &1339229829
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Kamera
 {
     internal class CameraController : MonoBehaviour
@@ -93,9 +94,10 @@ namespace Kamera
             yield return null;
         }
 
+        public void SetTransform(Vector3 position, Quaternion rotation) => Camera.transform.SetPositionAndRotation(position, rotation);
         private void OnGUI()
         {
-            if (GUI.Button(new Rect(10, 70, 50, 30), "Click"))
+            if (GUI.Button(new Rect(10, 70, 50, 30), "Click - Lerp Blend views"))
             {
                 ApplyConfig(ComputeAverage());
             }
