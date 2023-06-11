@@ -1,43 +1,45 @@
-using Kamera;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-internal class ViewVolumeBlender : MonoBehaviour
+namespace Kamera
 {
-
-    private static ViewVolumeBlender _instance;
-    public static ViewVolumeBlender Instance
-        => _instance
-        = _instance != null
-        ? _instance
-        : new GameObject(nameof(ViewVolumeBlender)).AddComponent<ViewVolumeBlender>();
-
-    private List<AViewVolume> ActiveViewVolumes = new List<AViewVolume>();
-    private Dictionary<AView, List<AViewVolume>> VolumesPerView = new Dictionary<AView, List<AViewVolume>>();
-        
-    public void AddVolume(AViewVolume viewVolume)
+    internal class ViewVolumeBlender : MonoBehaviour
     {
-        ActiveViewVolumes.Add(viewVolume);
-        AView view = viewVolume.View;
-        if (!VolumesPerView.ContainsKey(view))
+        private static ViewVolumeBlender _instance;
+        public static ViewVolumeBlender Instance
+            => _instance
+            = _instance != null
+            ? _instance
+            : new GameObject(nameof(ViewVolumeBlender)).AddComponent<ViewVolumeBlender>();
+
+        private readonly List<AViewVolume> ActiveViewVolumes = new List<AViewVolume>();
+        private readonly Dictionary<AView, List<AViewVolume>> VolumesPerView = new Dictionary<AView, List<AViewVolume>>();
+
+        public void AddVolume(AViewVolume viewVolume)
         {
-            VolumesPerView.Add(view, new List<AViewVolume>());
-            view.SetActive(true);
+            ActiveViewVolumes.Add(viewVolume);
+
+            var view = viewVolume.View;
+            if (!VolumesPerView.ContainsKey(view))
+            {
+                VolumesPerView.Add(view, new List<AViewVolume>());
+                view.SetActive(true);
+            }
+            else
+                VolumesPerView[view].Add(viewVolume);
         }
-        else
-            VolumesPerView[view].Add(viewVolume);
-    }
 
-    public void RemoveVolume(AViewVolume viewVolume)
-    {
-        ActiveViewVolumes.Remove(viewVolume);
-        AView view = viewVolume.View;
-        VolumesPerView[view].Remove(VolumesPerView[view].Find(x => x == viewVolume));
-        if (VolumesPerView[view].Count <= 0)
+        public void RemoveVolume(AViewVolume viewVolume)
         {
-            VolumesPerView.Remove(view);
-            view.SetActive(false);
+            ActiveViewVolumes.Remove(viewVolume);
+
+            var view = viewVolume.View;
+            VolumesPerView[view].Remove(VolumesPerView[view].Find(x => x == viewVolume));
+            if (VolumesPerView[view].Count <= 0)
+            {
+                VolumesPerView.Remove(view);
+                view.SetActive(false);
+            }
         }
     }
 }

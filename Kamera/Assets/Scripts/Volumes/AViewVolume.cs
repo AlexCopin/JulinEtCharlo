@@ -1,22 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Kamera
 {
     internal abstract class AViewVolume : MonoBehaviour
     {
-        public int Priority { get; set; }
-        public AView View { get; set; }
-
-        private int UID;
+        public int Priority { get; private set; }
+        public AView View { get; private set; }
 
         private static int NextUID;
 
+        private int UID;
+
         private bool _isActive;
 
-        protected bool IsActive 
+        protected bool IsActive
         {
             get => _isActive;
             set
@@ -27,13 +24,12 @@ namespace Kamera
             }
         }
 
-        public virtual float ComputeSelfWeight() => 1.0f;
+        public virtual float ComputeSelfWeight() => 1;
 
         private void Awake()
         {
             UID = NextUID;
             NextUID++;
         }
-
     }
 }
