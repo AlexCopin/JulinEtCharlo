@@ -1,4 +1,3 @@
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace Kamera
@@ -24,8 +23,6 @@ namespace Kamera
 
         private void Awake() => SetActive(IsActiveOnStart);
 
-        private void OnDrawGizmos() => DrawGizmos();
-
-        protected virtual void DrawGizmos() => Configuration.DrawGizmos(Color.magenta);
+        private void OnDrawGizmos() => Configuration.DrawGizmos(Color.magenta);
     }
 }

@@ -25,10 +25,5 @@ namespace Kamera
             Pivot = transform.position,
             Distance = 0
         };
-
-        protected override void DrawGizmos()
-        {
-            base.DrawGizmos();
-        }
     }
 }
